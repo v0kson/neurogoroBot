@@ -39,7 +39,7 @@ public class GigaChatService {
                 .addHeader(HeaderUtils.Content_Type_HEADER, "application/x-www-form-urlencoded")
                 .addHeader(HeaderUtils.ACCEPT_HEADER, "application/json")
                 .addHeader(HeaderUtils.RqUID_HEADER, rqUUID)
-                .addHeader(HeaderUtils.AUTHORIZATION_HEADER, authorization)
+                .addHeader(HeaderUtils.AUTHORIZATION_HEADER, String.format("Bearer %s", authorization))
                 .build());
 
         var response = responseJson.execute().body().string();
