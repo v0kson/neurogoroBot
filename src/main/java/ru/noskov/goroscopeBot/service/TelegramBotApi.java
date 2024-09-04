@@ -90,7 +90,7 @@ public class TelegramBotApi extends TelegramLongPollingBot {
                     try {
                         handleStopOrHelpCommand(chatId, userOptional);
                     } catch (NoSuchAlgorithmException | IOException | KeyManagementException e) {
-                        throw new RuntimeException(e);
+                        throw new RuntimeException("ошибка при получении accessToken: ", e);
                     }
                     break;
                 case "/delete":
