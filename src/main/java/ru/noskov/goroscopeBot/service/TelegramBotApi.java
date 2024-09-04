@@ -15,6 +15,9 @@ import ru.noskov.goroscopeBot.entity.UserEntity;
 import ru.noskov.goroscopeBot.repository.UserRepository;
 import ru.noskov.goroscopeBot.utils.Utils;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -84,7 +87,11 @@ public class TelegramBotApi extends TelegramLongPollingBot {
                     stopCommandReceived(chatId, name, userOptional);
                     break;
                 case "/help":
-                    handleStopOrHelpCommand(chatId, userOptional);
+                    try {
+                        handleStopOrHelpCommand(chatId, userOptional);
+                    } catch (NoSuchAlgorithmException | IOException | KeyManagementException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case "/delete":
                     handleDeleteCommand(chatId, userOptional);
@@ -97,7 +104,7 @@ public class TelegramBotApi extends TelegramLongPollingBot {
         }
     }
 
-    private void handleStopOrHelpCommand(Long chatId, Optional<UserEntity> userOptional) {
+    private void handleStopOrHelpCommand(Long chatId, Optional<UserEntity> userOptional) throws NoSuchAlgorithmException, IOException, KeyManagementException {
         gigaChatService.getAccessToken();
 
         if (userOptional.isPresent()) {

@@ -40,3 +40,6 @@ logging:
   level:
     org.hibernate.SQL: ${LOG_LEVEL_ORG_HIBERNATE_SQL:DEBUG}
     org.hibernate.type.descriptor.sql.BasicBinder: ${LOG_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASIC_BINDER:TRACE}
+
+gigachat:
+  authorization: ${AUTHORIZATION}
