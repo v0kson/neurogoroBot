@@ -1,0 +1,42 @@
+spring:
+  config:
+    import: classpath:application-props.yml
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl.auto: ${JPA_HBM2DDL_AUTO:none}
+        format_sql: ${FORMAT_SQL:false}
+        use_sql_comments: ${USE_SQL_COMMENTS:true}
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    schemas: ${FLYWAY_SCHEMAS:public}
+    url: jdbc:postgresql://${FLYWAY_DB_HOST}:${DB_PORT}/${FLYWAY_DB_NAME}
+    user: ${FLYWAY_USER}
+    password: ${FLYWAY_PASSWORD}
+    locations: classpath:/db/migration
+    baseline-on-migrate: ${FLYWAY_BASELINE_ON_MIGRATE:false}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+        ssl:
+          enabled: false
+
+bot:
+  token: ${BOT_TOKEN}
+  name: ${BOT_NAME}
+
+logging:
+  level:
+    org.hibernate.SQL: ${LOG_LEVEL_ORG_HIBERNATE_SQL:DEBUG}
+    org.hibernate.type.descriptor.sql.BasicBinder: ${LOG_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASIC_BINDER:TRACE}

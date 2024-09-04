@@ -1,0 +1,42 @@
+<configuration>
+
+    <!-- Указываем относительный путь к директории логов в домашней директории пользователя -->
+    <property name="HOME_LOG" value="${user.home}/Documents/Logs/springSenderBot/app.log"/>
+
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Изменяем шаблон имени файла для соответствия новому местоположению -->
+            <fileNamePattern>${HOME_LOG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>500MB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d %p %c [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Новый аппендер для вывода в консоль -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %p %c [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="io.proj3ct.SpringDemoBot" level="debug" additivity="false">
+        <appender-ref ref="FILE-ROLLING"/>
+    </logger>
+
+    <!-- Обновленный корневой логгер с выводом в консоль для уровня INFO и выше -->
+    <root level="info">
+        <appender-ref ref="FILE-ROLLING"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
