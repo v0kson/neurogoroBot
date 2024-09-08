@@ -105,7 +105,9 @@ public class TelegramBotApi extends TelegramLongPollingBot {
     }
 
     private void handleStopOrHelpCommand(Long chatId, Optional<UserEntity> userOptional) throws NoSuchAlgorithmException, IOException, KeyManagementException {
-        gigaChatService.getAccessToken();
+        var token = gigaChatService.getAccessToken();
+
+        gigaChatService.generateText(token);
 
         if (userOptional.isPresent()) {
             sendMessage(chatId, HELP_TEXT);
