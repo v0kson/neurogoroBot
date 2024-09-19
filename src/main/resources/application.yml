@@ -22,16 +22,6 @@ spring:
     locations: classpath:/db/migration
     baseline-on-migrate: ${FLYWAY_BASELINE_ON_MIGRATE:false}
 
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-        ssl:
-          enabled: false
-
 bot:
   token: ${BOT_TOKEN}
   name: ${BOT_NAME}
