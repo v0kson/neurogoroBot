@@ -130,10 +130,12 @@ public class TelegramBotApi extends TelegramLongPollingBot {
         if (userRepository.findByUsername(message.getChat().getUserName()).isEmpty()) {
             var chat = message.getChat();
             var chatId = chat.getId();
+            sendMessage(chatId, "Введить дату рождения в формате: DD.MM.YYYY");
 
             var user = utils.createUser(chatId, chat);
             user.setFirstName(chat.getFirstName());
-            user.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
+            user.setRegisterDate(Timestamp.valueOf(LocalDateTime.now
+                    ()));
 
             userRepository.save(user);
 

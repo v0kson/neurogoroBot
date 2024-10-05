@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -48,7 +49,7 @@ public class GigaChatService {
                 .addHeader(HeaderUtils.AUTHORIZATION_HEADER, String.format("Bearer %s", authorization))
                 .build());
 
-        var response = responseJson.execute().body().string();
+        var response = Objects.requireNonNull(responseJson.execute().body()).string();
 
         var objectMapper = new ObjectMapper();
 
@@ -60,11 +61,11 @@ public class GigaChatService {
 
         var dto = mapper.toMessageRequestDto("GigaChat");
         MessageDto dto1 = new MessageDto();
-        dto1.setContent("Отвечай как астролог/мошенник");
+        dto1.setContent("Отвечай как астролог");
         dto1.setRole("system");
 
         MessageDto dto2 = new MessageDto();
-        dto2.setContent("расскажи про мою судьбу");
+        dto2.setContent("привет");
         dto2.setRole("user");
 
         dto.setMessages(List.of(dto1, dto2));
@@ -72,17 +73,17 @@ public class GigaChatService {
         ObjectMapper objectMapper = new ObjectMapper();
         var json = objectMapper.writeValueAsString(dto);
 
-
         RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
         var responseJson = client.newCall(new Request.Builder()
                 .url("https://gigachat.devices.sberbank.ru/api/v1/chat/completions")
                 .method("POST", body)
                 .addHeader(HeaderUtils.Content_Type_HEADER, "application/json")
-                .addHeader(HeaderUtils.ACCEPT_HEADER, "application/json")
+                .addHeader(HeaderUtils.ACCEPT_HEADER, "*/*")
                 .addHeader(HeaderUtils.AUTHORIZATION_HEADER, String.format("Bearer %s", accessToken))
-                .build());
+                .build()
+        );
 
-        var response = responseJson.execute();
+        var response = responseJson.execute().body().string();
     }
 
 }
