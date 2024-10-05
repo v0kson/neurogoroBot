@@ -84,6 +84,7 @@ public class GigaChatService {
         );
 
         var response = responseJson.execute().body().string();
+
     }
 
 }
