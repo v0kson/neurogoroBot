@@ -53,4 +53,4 @@ jobs:
             docker system prune -a -f
 
       - name: Log successful push
-        run: echo "container updated!"
+        run: echo "container updated!!"
