@@ -1,44 +1,29 @@
-name: Publish and Deploy Docker Image
+name: Build, Push and Deploy MyApp1
 
 on:
   push:
-    branches: ['main']
-
+    branches:
+      - main
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Log into Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: rollsberbank/repository
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Log successful push
-        run: echo "Image successfully pushed to rollsberbank/repository!"
-
-      - name: Clean up
-        run: |
-          rm -rf .docker
+          tags: rollsberbank/repository:latest
 
       - name: Deploy to server via SSH and restart Docker Compose
         uses: appleboy/ssh-action@v0.1.3
@@ -48,9 +33,9 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ~/myapp
-            docker-compose pull myapp1
+            docker-compose pull myapp1 
             docker-compose up -d --force-recreate myapp1
             docker system prune -a -f
 
-      - name: Log successful push
-        run: echo "container updated!!"
+      - name: Log successful deploy
+        run: echo "Telegram Bot updated successfully!"
