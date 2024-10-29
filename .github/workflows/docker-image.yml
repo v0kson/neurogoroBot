@@ -48,8 +48,8 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ~/myapp
-            docker-compose pull
-            docker-compose up -d --force-recreate
+            docker-compose pull myapp1
+            docker-compose up -d --force-recreate myapp1
             docker system prune -a -f
 
       - name: Log successful push
